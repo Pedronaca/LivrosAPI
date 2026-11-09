@@ -1,0 +1,36 @@
+services:
+  # 1. Banco de dados PostgreSQL
+  db:
+    image: postgres:15-alpine
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: "${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no Coolify}"
+      POSTGRES_DB: catalogo_db
+    expose:
+      - "5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Backend FastAPI
+  backend:
+    build: ./backend
+    restart: always
+    expose:
+      - "8000"
+    environment:
+      DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no Coolify}@db:5432/catalogo_db"
+    depends_on:
+      - db
+
+  # 3. Frontend Nginx
+  frontend:
+    build: ./frontend
+    restart: always
+    expose:
+      - "80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
