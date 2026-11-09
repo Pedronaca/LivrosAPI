@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Catálogo de Livros</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container">
+    <header>
+      <h1>🐋 DockerBooks</h1>
+      <p>Gerencie sua biblioteca pessoal</p>
+    </header>
+
+    <!-- Formulário de Cadastro -->
+    <section class="card form-section">
+      <h2>Adicionar Livro</h2>
+      <form id="book-form">
+        <div class="form-group">
+          <input type="text" id="titulo" placeholder="Título do livro" required>
+        </div>
+        <div class="form-group">
+          <input type="text" id="autor" placeholder="Autor" required>
+        </div>
+        <div class="form-row">
+          <input type="text" id="genero" placeholder="Gênero (ex: Ficção)">
+          <input type="number" id="ano" placeholder="Ano de publicação">
+        </div>
+        <div class="form-checkbox">
+          <label>
+            <input type="checkbox" id="lido"> Já foi lido?
+          </label>
+        </div>
+        <button type="submit" class="btn-primary">Cadastrar Livro</button>
+      </form>
+    </section>
+
+    <!-- Listagem -->
+    <section class="list-section">
+      <h2>Meus Livros</h2>
+      <div id="books-grid" class="books-grid">
+        <!-- Cards inseridos via JavaScript -->
+      </div>
+    </section>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>

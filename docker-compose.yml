@@ -1,0 +1,39 @@
+services:
+  # 1. Banco de Dados
+  db:
+    image: postgres:15-alpine
+    container_name: livros_db
+    restart: always
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgrespassword
+      POSTGRES_DB: catalogo_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+
+  # 2. Backend (API FastAPI)
+  backend:
+    build: ./backend
+    container_name: livros_backend
+    restart: always
+    ports:
+      - "8000:8000"
+    environment:
+      - DATABASE_URL=postgresql://postgres:postgrespassword@db:5432/catalogo_db
+    depends_on:
+      - db
+
+  # 3. Frontend (Nginx)
+  frontend:
+    build: ./frontend
+    container_name: livros_frontend
+    restart: always
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  postgres_data:
