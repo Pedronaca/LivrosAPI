@@ -1,5 +1,4 @@
 services:
-  # 1. Banco de dados PostgreSQL
   db:
     image: postgres:15-alpine
     restart: always
@@ -12,19 +11,17 @@ services:
     volumes:
       - postgres_data:/var/lib/postgresql/data
 
-  # 2. Backend FastAPI
   backend:
     build: ./backend
     restart: always
-    expose:
-      - "8000"
     environment:
       DATABASE_URL: "postgresql://postgres:${POSTGRES_PASSWORD:?Defina POSTGRES_PASSWORD no Coolify}@db:5432/catalogo_db"
+    expose:
+      - "8000"
     depends_on:
       - db
 
-  # 3. Frontend Nginx
- frontend:
+  frontend:
     build: ./frontend
     restart: always
     ports:
