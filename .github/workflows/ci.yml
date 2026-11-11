@@ -1,0 +1,36 @@
+name: Verificar LivrosAPI
+
+on:
+  push:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  verificar:
+    name: Verificar código e construir imagens
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Baixar o código do repositório
+        uses: actions/checkout@v6
+
+      - name: Preparar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version: "3.11"
+
+      - name: Conferir sintaxe do backend
+        run: python -m compileall -q backend
+
+      - name: Conferir sintaxe do frontend
+        run: node --check frontend/script.js
+
+      - name: Validar configuração do Docker Compose
+        run: docker compose config --quiet
+
+      - name: Construir imagens do frontend e backend
+        run: docker compose build
